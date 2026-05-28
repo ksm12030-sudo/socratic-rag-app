@@ -6,7 +6,16 @@ from openai import OpenAI
 from prompts import SYSTEM_PROMPT
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    try:
+        api_key = st.secrets["OPENAI_API_KEY"]
+    except Exception:
+        api_key = None
+
+client = OpenAI(api_key=api_key)
 
 MODEL = "gpt-5.4"
 # model_not_found 뜨면 임시로 아래 사용
